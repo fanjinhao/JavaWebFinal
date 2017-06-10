@@ -3,14 +3,14 @@ package com.wy.tool;
 import java.sql.*;
 
 public class JDBConnection {
-    private final String url = "jdbc:sqlserver://192.168.1.199:1433;DatabaseName=db_BlodMay";
-    private final String userName = "sa";
-    private final String password = "111";
+    private String url = "jdbc:mysql://localhost/db_BlodMay";
+    private final String userName = "root";
+    private final String password = "123456";
     private Connection con = null;
 //通过构造方法加载数据库驱动
     static {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance(); 
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
             System.out.println("数据库加载失败");
         }

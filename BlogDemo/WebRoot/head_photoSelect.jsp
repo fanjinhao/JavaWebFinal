@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ·¶½úºÀ
-  Date: 2017/6/10
-  Time: 23:57
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html; charset=gb2312" language="java" import="java.sql.*" errorPage="" %>
 <jsp:directive.page import="java.util.List"/>
 <jsp:directive.page import="com.wy.form.PhotoForm"/>

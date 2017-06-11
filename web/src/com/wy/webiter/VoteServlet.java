@@ -15,61 +15,62 @@ import com.wy.form.VoteForm;
 
 public class VoteServlet extends HttpServlet {
 
-    private VoteDao voteDao = null;
+	private VoteDao voteDao = null;
 
-    private int method;
+	private int method;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.method = Integer.parseInt(request.getParameter("method"));
-        if (method == 0) {
-            this.addVote(request, response);
-        }
-        if (method == 1) {
-            this.deleteVote(request, response);
-        }
-    }
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		this.method = Integer.parseInt(request.getParameter("method"));
+		if (method == 0) {
+			this.addVote(request, response);
+		}
+		if (method == 1) {
+			this.deleteVote(request, response);
+		}
+	}
 
 
-    // åå°-åˆ é™¤æŠ•ç¥¨å†…å®¹
-    public void deleteVote(HttpServletRequest request,
-                           HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        VoteForm voteForm = new VoteForm();
-        voteDao = new VoteDao();
-        voteForm.setId(Integer.valueOf(request.getParameter("id")));
-        if (voteDao.operationVote("åˆ é™¤", voteForm)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ­¤æŠ•ç¥¨å†…å®¹æˆåŠŸï¼Œè¯·é‡æ–°è¿›è¡ŒæŸ¥è¯¢ï¼');window.location.href='back_VoteSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ­¤æŠ•ç¥¨å†…å®¹å¤±è´¥ï¼');history.go(-1);</script>");
-        }
-    }
 
-    // åå°ï¼æ·»åŠ æŠ•ç¥¨å†…å®¹
-    public void addVote(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        VoteForm voteForm = new VoteForm();
-        voteDao = new VoteDao();
-        voteForm.setVoteName(Chinese
-                .toChinese(request.getParameter("voteName")));
-        voteForm.setVoteNumber(0);
-        String result = "æ·»åŠ æŠ•ç¥¨å†…å®¹å¤±è´¥!";
-        if (voteDao.operationVote("æ·»åŠ ", voteForm)) {
-            result = "æ·»åŠ æŠ•ç¥¨å†…å®¹æˆåŠŸ!";
-        }
-        request.setAttribute("result", result);
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_VoteAdd.jsp");
-        requestDispatcher.forward(request, response);
+	// ºóÌ¨-É¾³ıÍ¶Æ±ÄÚÈİ
+	public void deleteVote(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		VoteForm voteForm = new VoteForm();
+		voteDao = new VoteDao();
+		voteForm.setId(Integer.valueOf(request.getParameter("id")));
+		if (voteDao.operationVote("É¾³ı", voteForm)) {
+			out
+					.print("<script language=javascript>alert('É¾³ı´ËÍ¶Æ±ÄÚÈİ³É¹¦£¬ÇëÖØĞÂ½øĞĞ²éÑ¯£¡');window.location.href='back_VoteSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ı´ËÍ¶Æ±ÄÚÈİÊ§°Ü£¡');history.go(-1);</script>");
+		}
+	}
 
-    }
+	// ºóÌ¨£­Ìí¼ÓÍ¶Æ±ÄÚÈİ
+	public void addVote(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		VoteForm voteForm = new VoteForm();
+		voteDao = new VoteDao();
+		voteForm.setVoteName(Chinese
+				.toChinese(request.getParameter("voteName")));
+		voteForm.setVoteNumber(0);
+		String result = "Ìí¼ÓÍ¶Æ±ÄÚÈİÊ§°Ü!";
+		if (voteDao.operationVote("Ìí¼Ó", voteForm)) {
+			result = "Ìí¼ÓÍ¶Æ±ÄÚÈİ³É¹¦!";
+		}
+		request.setAttribute("result", result);
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_VoteAdd.jsp");
+		requestDispatcher.forward(request, response);
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.doGet(request, response);
-    }
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		this.doGet(request, response);
+	}
 
 }

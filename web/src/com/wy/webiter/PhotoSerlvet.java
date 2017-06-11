@@ -27,15 +27,15 @@
 //			throws ServletException, IOException {
 //		this.method = Integer.parseInt(request.getParameter("method"));
 //		if (method == 0) {
-//			this.addPhoto(request, response); // ä¸Šä¼ å›¾ç‰‡
+//			this.addPhoto(request, response); // ÉÏ´«Í¼Æ¬
 //		}
 //		if (method == 1) {
-//			this.deletePhoto(request, response); // åˆ é™¤å›¾ç‰‡
+//			this.deletePhoto(request, response); // É¾³ıÍ¼Æ¬
 //		}
 //
 //	}
 //
-//	// åˆ é™¤å›¾ç‰‡
+//	// É¾³ıÍ¼Æ¬
 //	public void deletePhoto(HttpServletRequest request,
 //			HttpServletResponse response) throws ServletException, IOException {
 //		response.setContentType("text/html;charset=GBK");
@@ -47,13 +47,13 @@
 //		java.io.File file = new java.io.File(photoDir);
 //		PhotoForm photoForm = new PhotoForm();
 //		photoForm.setId(id);
-//		if (photoDao.operationPhoto("åˆ é™¤", photoForm)) {
+//		if (photoDao.operationPhoto("É¾³ı", photoForm)) {
 //			file.delete();
 //			out
-//					.print("<script language=javascript>alert('åˆ é™¤å›¾ç‰‡æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_PhotoSelect.jsp';</script>");
+//					.print("<script language=javascript>alert('É¾³ıÍ¼Æ¬³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_PhotoSelect.jsp';</script>");
 //		} else {
 //			out
-//					.print("<script language=javascript>alert('ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
+//					.print("<script language=javascript>alert('ĞŞ¸ÄÓÃ»§ĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
 //		}
 //
 //	}
@@ -68,23 +68,23 @@
 //		if (photoDao.MaxQueryID() != null) {
 //			maxID = photoDao.MaxQueryID();
 //		}
-//		String result = "ä¸Šä¼ çš„ç…§ç‰‡æ ¼å¼å’Œå¤§å°æœ‰é—®é¢˜,ä¸Šä¼ ç…§ç‰‡å¤±è´¥!";
+//		String result = "ÉÏ´«µÄÕÕÆ¬¸ñÊ½ºÍ´óĞ¡ÓĞÎÊÌâ,ÉÏ´«ÕÕÆ¬Ê§°Ü!";
 //		String type = null;
 //		String imageType[] = { "JPG", "jpg", "gif", "bmp", "BMP" };
 //		String filedir = "file/";
-//		long maxsize = 2 * 1024 * 1024; // è®¾ç½®æ¯ä¸ªä¸Šä¼ æ–‡ä»¶çš„å¤§å°ï¼Œä¸º2MB
+//		long maxsize = 2 * 1024 * 1024; // ÉèÖÃÃ¿¸öÉÏ´«ÎÄ¼şµÄ´óĞ¡£¬Îª2MB
 //		try {
 //			su.initialize(this.getServletConfig(), request, response);
-//			su.setMaxFileSize(maxsize); // é™åˆ¶ä¸Šä¼ æ–‡ä»¶çš„å¤§å°
-//			su.upload(); // ä¸Šä¼ æ–‡ä»¶
-//			Files files = su.getFiles(); // è·å–æ‰€æœ‰çš„ä¸Šä¼ æ–‡ä»¶
-//			for (int i = 0; i < files.getCount(); i++) { // é€ä¸ªè·å–ä¸Šä¼ çš„æ–‡ä»¶
+//			su.setMaxFileSize(maxsize); // ÏŞÖÆÉÏ´«ÎÄ¼şµÄ´óĞ¡
+//			su.upload(); // ÉÏ´«ÎÄ¼ş
+//			Files files = su.getFiles(); // »ñÈ¡ËùÓĞµÄÉÏ´«ÎÄ¼ş
+//			for (int i = 0; i < files.getCount(); i++) { // Öğ¸ö»ñÈ¡ÉÏ´«µÄÎÄ¼ş
 //				File singlefile = files.getFile(i);
 //				type = singlefile.getFileExt();
 //
 //				for (int ii = 0; ii < imageType.length; ii++) {
 //					if (imageType[ii].equals(type)) {
-//						if (!singlefile.isMissing()) { // å¦‚æœé€‰æ‹©äº†æ–‡ä»¶
+//						if (!singlefile.isMissing()) { // Èç¹ûÑ¡ÔñÁËÎÄ¼ş
 //							String photoTime = su.getRequest().getParameter(
 //									"phtoTime");
 //							String photoDescription = su.getRequest()
@@ -96,9 +96,9 @@
 //							filedir = filedir + maxID + "."
 //									+ singlefile.getFileExt();
 //							photoForm.setPhotoAddress(filedir);
-//							if (photoDao.operationPhoto("æ·»åŠ ", photoForm)) {
+//							if (photoDao.operationPhoto("Ìí¼Ó", photoForm)) {
 //								singlefile.saveAs(filedir, File.SAVEAS_VIRTUAL);
-//								result = "ä¸Šä¼ ç…§ç‰‡æˆåŠŸ!";
+//								result = "ÉÏ´«ÕÕÆ¬³É¹¦!";
 //							}
 //						}
 //					}

@@ -4,118 +4,110 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyPagination {
-    public List<Object> list = null;
-    private int recordCount = 0;
-    private int pagesize = 0;
-    private int maxPage = 0;
+	public List<Object> list=null;
+	private int recordCount=0;
+	private int pagesize=0;
+	private int maxPage=0;
 
-    //åˆå§‹åŒ–åˆ†é¡µä¿¡æ¯
-    public List getInitPage(List list, int Page, int pagesize) {
-        List<Object> newList = new ArrayList<Object>();
-        this.list = list;
-        recordCount = list.size();
-        this.pagesize = pagesize;
-        this.maxPage = getMaxPage();
-        try {
-            for (int i = (Page - 1) * pagesize; i <= Page * pagesize - 1; i++) {
-                try {
-                    if (i >= recordCount) {
-                        break;
-                    }
-                } catch (Exception e) {
-                }
-                newList.add((Object) list.get(i));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return newList;
-    }
-
-    //è·å–æŒ‡å®šé¡µçš„æ•°æ®
-    public List<Object> getAppointPage(int Page) {
-        List<Object> newList = new ArrayList<Object>();
-        try {
-            for (int i = (Page - 1) * pagesize; i <= Page * pagesize - 1; i++) {
-                try {
-                    if (i >= recordCount) {
-                        break;
-                    }
-                } catch (Exception e) {
-                }
-                newList.add((Object) list.get(i));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return newList;
-    }
-
-    //è·å–æœ€å¤§è®°å½•æ•°
-    public int getMaxPage() {
-        int maxPage = (recordCount % pagesize == 0) ? (recordCount / pagesize) : (recordCount / pagesize + 1);
-        return maxPage;
-    }
-
-    //è·å–æ€»è®°å½•æ•°
-    public int getRecordSize() {
-        return recordCount;
-    }
-
-    //è·å–å½“å‰é¡µæ•°
-    public int getPage(String str) {
-        System.out.println("STR:" + str + "&&&&" + recordCount);
-        if (str == null) {
-            str = "0";
-        }
-        int Page = Integer.parseInt(str);
-        if (Page < 1) {
-            Page = 1;
-        } else {
-            if (((Page - 1) * pagesize + 1) > recordCount) {
-                Page = maxPage;
-            }
-        }
-        return Page;
-    }
-
-    public String printCtrl(int Page) {
-        String strHtml = "<table width='370'  border='0' cellspacing='0' cellpadding='0'><tr> <td height='24' align='right'>å½“å‰é¡µæ•°ï¼š[" + Page + "/" + maxPage + "]&nbsp;&nbsp;";
-        try {
-            if (Page > 1) {
-                strHtml = strHtml + "<a href='?Page=1'>ç¬¬ä¸€é¡µ</a>ã€€";
-                strHtml = strHtml + "&nbsp;&nbsp;<a href='?Page=" + (Page - 1) + "'>ä¸Šä¸€é¡µ</a>";
-            }
-            if (Page < maxPage) {
-                strHtml = strHtml + "&nbsp;&nbsp;<a href='?Page=" + (Page + 1) + "'>ä¸‹ä¸€é¡µ</a>&nbsp;&nbsp;ã€€<a href='?Page=" + maxPage + "'>æœ€åä¸€é¡µ&nbsp;</a>";
-            }
-            strHtml = strHtml + "</td> </tr>	</table>";
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        return strHtml;
-    }
-
-
-    public String printCtrl(int Page, String id) {
-        id = "&id=" + id;
-        String strHtml = "<table width='370'  border='0' cellspacing='0' cellpadding='0'><tr> <td height='24' align='right'>å½“å‰é¡µæ•°ï¼š[" + Page + "/" + maxPage + "]&nbsp;&nbsp;";
-        try {
-            if (Page > 1) {
-                strHtml = strHtml + "<a href='?Page=1" + id + "'>ç¬¬ä¸€é¡µ</a>ã€€";
-                strHtml = strHtml + "&nbsp;&nbsp;<a href='?Page=" + (Page - 1) + id + "'>ä¸Šä¸€é¡µ</a>";
-            }
-            if (Page < maxPage) {
-                strHtml = strHtml + "&nbsp;&nbsp;<a href='?Page=" + (Page + 1) + id + "'>ä¸‹ä¸€é¡µ</a>&nbsp;&nbsp;ã€€<a href='?Page=" + maxPage + id + "'>æœ€åä¸€é¡µ&nbsp;</a>";
-            }
-            strHtml = strHtml + "</td> </tr>	</table>";
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        return strHtml;
-    }
-
-
+	//³õÊ¼»¯·ÖÒ³ĞÅÏ¢
+	public List getInitPage(List list,int Page,int pagesize){
+		List<Object> newList=new ArrayList<Object>();
+		this.list=list;
+		recordCount=list.size();
+		this.pagesize=pagesize;
+		this.maxPage=getMaxPage();
+		try{
+		for(int i=(Page-1)*pagesize;i<=Page*pagesize-1;i++){
+			try{
+				if(i>=recordCount){break;}
+			}catch(Exception e){}
+			newList.add((Object)list.get(i));
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return newList;
+	}
+	//»ñÈ¡Ö¸¶¨Ò³µÄÊı¾İ
+	public List<Object> getAppointPage(int Page){
+		List<Object> newList=new ArrayList<Object>();
+		try{
+			for(int i=(Page-1)*pagesize;i<=Page*pagesize-1;i++){
+				try{
+					if(i>=recordCount){break;}
+				}catch(Exception e){}
+				newList.add((Object)list.get(i));
+			}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return newList;
+	}
+	//»ñÈ¡×î´ó¼ÇÂ¼Êı
+	public int getMaxPage(){
+		int maxPage=(recordCount%pagesize==0)?(recordCount/pagesize):(recordCount/pagesize+1);
+		return maxPage;
+	}
+	//»ñÈ¡×Ü¼ÇÂ¼Êı
+	public int getRecordSize(){
+		return recordCount;
+	}
+	
+	//»ñÈ¡µ±Ç°Ò³Êı
+	public int getPage(String str){
+		System.out.println("STR:"+str+"&&&&"+recordCount);
+		if(str==null){
+			str="0";
+		}
+		int Page=Integer.parseInt(str);
+		if(Page<1){
+			Page=1;
+		}else{
+			if(((Page-1)*pagesize+1)>recordCount){
+				Page=maxPage;
+			}
+		}
+		return Page;
+	}
+	public String printCtrl(int Page){
+		String strHtml="<table width='370'  border='0' cellspacing='0' cellpadding='0'><tr> <td height='24' align='right'>µ±Ç°Ò³Êı£º["+Page+"/"+maxPage+"]&nbsp;&nbsp;";
+		try{
+		if(Page>1){
+			strHtml=strHtml+"<a href='?Page=1'>µÚÒ»Ò³</a>¡¡";
+			strHtml=strHtml+"&nbsp;&nbsp;<a href='?Page="+(Page-1)+"'>ÉÏÒ»Ò³</a>";
+		}
+		if(Page<maxPage){
+			strHtml=strHtml+"&nbsp;&nbsp;<a href='?Page="+(Page+1)+"'>ÏÂÒ»Ò³</a>&nbsp;&nbsp;¡¡<a href='?Page="+maxPage+"'>×îºóÒ»Ò³&nbsp;</a>";
+		}
+		strHtml=strHtml+"</td> </tr>	</table>";
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return strHtml;
+	}
+	
+	
+	
+	
+	public String printCtrl(int Page,String id){
+		id="&id="+id;
+		String strHtml="<table width='370'  border='0' cellspacing='0' cellpadding='0'><tr> <td height='24' align='right'>µ±Ç°Ò³Êı£º["+Page+"/"+maxPage+"]&nbsp;&nbsp;";
+		try{
+		if(Page>1){
+			strHtml=strHtml+"<a href='?Page=1"+id+"'>µÚÒ»Ò³</a>¡¡";
+			strHtml=strHtml+"&nbsp;&nbsp;<a href='?Page="+(Page-1)+id+"'>ÉÏÒ»Ò³</a>";
+		}
+		if(Page<maxPage){
+			strHtml=strHtml+"&nbsp;&nbsp;<a href='?Page="+(Page+1)+id+"'>ÏÂÒ»Ò³</a>&nbsp;&nbsp;¡¡<a href='?Page="+maxPage+id+"'>×îºóÒ»Ò³&nbsp;</a>";
+		}
+		strHtml=strHtml+"</td> </tr>	</table>";
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		return strHtml;
+	}
+	
+	
 }

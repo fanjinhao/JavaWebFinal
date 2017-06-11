@@ -15,95 +15,98 @@ import com.wy.tool.Chinese;
 
 public class DiscussServlet extends HttpServlet {
 
-    private int method;
+	private int method;
 
-    private DiscussDao disussDao = null;
+	private DiscussDao disussDao = null;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        System.out.println("32131");
-        this.method = Integer.parseInt(request.getParameter("method"));
-        System.out.println("32131");
-        if (method == 0) {
-            this.addDisuss(request, response);// åå°ï¼Œæ·»åŠ å…¬å‘Šå†…å®¹
-        }
-        if (method == 1) {
-            this.deleteDisuss(request, response);// åå°ï¼Œ åˆ é™¤å…¬å‘Šå†…å®¹
-        }
-        if (method == 2) {
-            this.updateDisuss(request, response);//	åå°ï¼Œ ä¿®æ”¹å…¬å‘Šå†…å®¹
-        }
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("32131");
+		this.method = Integer.parseInt(request.getParameter("method"));
+		System.out.println("32131");
+		if (method == 0) {
+			this.addDisuss(request, response);// ºóÌ¨£¬Ìí¼Ó¹«¸æÄÚÈİ
+		}
+		if (method == 1) {
+			this.deleteDisuss(request, response);// ºóÌ¨£¬ É¾³ı¹«¸æÄÚÈİ
+		}
+		if (method == 2) {
+			this.updateDisuss(request, response);//	ºóÌ¨£¬ ĞŞ¸Ä¹«¸æÄÚÈİ
+		}
+		
+		
+		
 
+	}
 
-    }
+//	ºóÌ¨£¬ ĞŞ¸ÄÆÀÂÛÄÚÈİ
+	public void updateDisuss(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		DiscussForm disussForm = new DiscussForm();
+		disussDao = new DiscussDao();
+		disussForm.setId(Integer.valueOf(request.getParameter("id")));
+		disussForm.setDiscussTitle(Chinese.toChinese(request
+				.getParameter("discussTitle")));
+		disussForm.setDiscussContent(Chinese.toChinese(request
+				.getParameter("discussContent")));
+		if (disussDao.operationDiscuss("ĞŞ¸Ä", disussForm)) {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸Ä¹«¸æĞÅÏ¢³É¹¦£¡');window.location.href='back_DiscussSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸Ä¹«¸æĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
-    //	åå°ï¼Œ ä¿®æ”¹è¯„è®ºå†…å®¹
-    public void updateDisuss(HttpServletRequest request,
-                             HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        DiscussForm disussForm = new DiscussForm();
-        disussDao = new DiscussDao();
-        disussForm.setId(Integer.valueOf(request.getParameter("id")));
-        disussForm.setDiscussTitle(Chinese.toChinese(request
-                .getParameter("discussTitle")));
-        disussForm.setDiscussContent(Chinese.toChinese(request
-                .getParameter("discussContent")));
-        if (disussDao.operationDiscuss("ä¿®æ”¹", disussForm)) {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹å…¬å‘Šä¿¡æ¯æˆåŠŸï¼');window.location.href='back_DiscussSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹å…¬å‘Šä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+		
+	
+	}
+	
+	
+	//ºóÌ¨£¬ É¾³ıÆÀÂÛÄÚÈİ
+	public void deleteDisuss(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		DiscussForm disussForm = new DiscussForm();
+		disussDao = new DiscussDao();
+		disussForm.setId(Integer.valueOf(request.getParameter("id")));
+		if (disussDao.operationDiscuss("É¾³ı", disussForm)) {
+			out
+					.print("<script language=javascript>alert('É¾³ı¹«¸æĞÅÏ¢³É¹¦£¡');window.location.href='back_DiscussSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ı¹«¸æĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
+	}
 
-    }
+	// ºóÌ¨£¬Ìí¼ÓÆÀÂÛÄÚÈİ
+	public void addDisuss(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		DiscussForm disussForm = new DiscussForm();
+		disussDao = new DiscussDao();
+		disussForm.setDiscussTitle(Chinese.toChinese(request
+				.getParameter("discussTitle")));
+		disussForm.setDiscussContent(Chinese.toChinese(request
+				.getParameter("discussContent")));
+		disussForm.setDiscussTime(Chinese.toChinese(request
+				.getParameter("discussTime")));
+		String result = "Ìí¼Ó¹«¸æÊ§°Ü£¡";
+		if (disussDao.operationDiscuss("Ìí¼Ó", disussForm)) {
+			result = "Ìí¼Ó¹«¸æ³É¹¦£¡";
+		}
+		request.setAttribute("result", result);
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_DiscussAdd.jsp");
+		requestDispatcher.forward(request, response);
 
+	}
 
-    //åå°ï¼Œ åˆ é™¤è¯„è®ºå†…å®¹
-    public void deleteDisuss(HttpServletRequest request,
-                             HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        DiscussForm disussForm = new DiscussForm();
-        disussDao = new DiscussDao();
-        disussForm.setId(Integer.valueOf(request.getParameter("id")));
-        if (disussDao.operationDiscuss("åˆ é™¤", disussForm)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤å…¬å‘Šä¿¡æ¯æˆåŠŸï¼');window.location.href='back_DiscussSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤å…¬å‘Šä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
-
-    }
-
-    // åå°ï¼Œæ·»åŠ è¯„è®ºå†…å®¹
-    public void addDisuss(HttpServletRequest request,
-                          HttpServletResponse response) throws ServletException, IOException {
-        DiscussForm disussForm = new DiscussForm();
-        disussDao = new DiscussDao();
-        disussForm.setDiscussTitle(Chinese.toChinese(request
-                .getParameter("discussTitle")));
-        disussForm.setDiscussContent(Chinese.toChinese(request
-                .getParameter("discussContent")));
-        disussForm.setDiscussTime(Chinese.toChinese(request
-                .getParameter("discussTime")));
-        String result = "æ·»åŠ å…¬å‘Šå¤±è´¥ï¼";
-        if (disussDao.operationDiscuss("æ·»åŠ ", disussForm)) {
-            result = "æ·»åŠ å…¬å‘ŠæˆåŠŸï¼";
-        }
-        request.setAttribute("result", result);
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_DiscussAdd.jsp");
-        requestDispatcher.forward(request, response);
-
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.doGet(request, response);
-    }
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		this.doGet(request, response);
+	}
 
 }

@@ -9,49 +9,49 @@ import com.wy.form.RestoreForm;
 import com.wy.tool.JDBConnection;
 
 public class RestoreDao {
-    private JDBConnection connection = null;
+	private JDBConnection connection = null;
 
-    public RestoreDao() {
-        connection = new JDBConnection();
-    }
+	public RestoreDao() {
+		connection = new JDBConnection();
+	}
 
-    public boolean operationRestore(String operation, RestoreForm form) {
-        boolean flag = false;
-        String sql = "";
-        if (operation.equals("Ê∑ªÂä†"))
-            sql = "insert into tb_restore values ('" + form.getArticleId()
-                    + "','" + form.getReAccount() + "','" + form.getReTitle()
-                    + "','" + form.getReContent() + "')";
-        if (operation.equals("Âà†Èô§"))
-            sql = "delete from tb_restore where id='" + form.getId() + "'";
-        if (connection.executeUpdate(sql)) {
-            flag = true;
-        }
-        return flag;
-    }
+	public boolean operationRestore(String operation, RestoreForm form) {
+		boolean flag = false;
+		String sql = "";
+		if (operation.equals("ÃÌº”"))
+			sql = "insert into tb_restore values ('" + form.getArticleId()
+					+ "','" + form.getReAccount() + "','" + form.getReTitle()
+					+ "','" + form.getReContent() + "')";
+		if (operation.equals("…æ≥˝"))
+			sql = "delete from tb_restore where id='" + form.getId() + "'";
+		if (connection.executeUpdate(sql)) {
+			flag = true;
+		}
+		return flag;
+	}
 
-    public List queryRestore(Integer articleId) {
-        List list = new ArrayList();
-        String sql = "select * from tb_restore where articleId='" + articleId
-                + "' order by id desc";
-        RestoreForm form = null;
-        ResultSet rs = connection.executeQuery(sql);
-        try {
-            while (rs.next()) {
-                form = new RestoreForm();
-                form.setId(rs.getInt(1));
-                form.setArticleId(rs.getInt(2));
-                form.setReAccount(rs.getString(3));
-                form.setReTitle(rs.getString(4));
-                form.setReContent(rs.getString(5));
-                list.add(form);
-            }
-        } catch (SQLException e) {
-            // TODO Ëá™Âä®ÁîüÊàê catch Âùó
-            e.printStackTrace();
-        }
-        return list;
+	public List queryRestore(Integer articleId) {
+		List list = new ArrayList();
+		String sql = "select * from tb_restore where articleId='" + articleId
+				+ "' order by id desc";
+		RestoreForm form = null;
+		ResultSet rs = connection.executeQuery(sql);
+		try {
+			while (rs.next()) {
+				form = new RestoreForm();
+				form.setId(rs.getInt(1));
+				form.setArticleId(rs.getInt(2));
+				form.setReAccount(rs.getString(3));
+				form.setReTitle(rs.getString(4));
+				form.setReContent(rs.getString(5));
+				list.add(form);
+			}
+		} catch (SQLException e) {
+			// TODO ◊‘∂Ø…˙≥… catch øÈ
+			e.printStackTrace();
+		}
+		return list;
 
-    }
+	}
 
 }

@@ -19,195 +19,195 @@ import com.wy.tool.Chinese;
 
 public class ArticleServlet extends HttpServlet {
 
-    private ArticleDao articleDao = null;
+	private ArticleDao articleDao = null;
 
-    private ArticleTypeDao articleTypeDao = null;
+	private ArticleTypeDao articleTypeDao = null;
 
-    private RestoreDao restoreDao = null;
+	private RestoreDao restoreDao = null;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int method = Integer.parseInt(request.getParameter("method"));
-        if (method == 0) {
-            this.addArticleType(request, response);
-        }
-        if (method == 1) {
-            this.deleteArticleType(request, response);
-        }
-        if (method == 2) {
-            this.addArticle(request, response);
-        }
-        if (method == 3) {
-            this.deleteArticle(request, response);
-        }
-        if (method == 4) {
-            this.updateArticle(request, response);
-        }
-        if (method == 5) {
-            this.headAddNumberArticle(request, response);
-        }
-        if (method == 6) {
-            this.deleteRestore(request, response);
-        }
-        if (method == 7) {
-            this.HeadAddRestore(request, response);
-        }
-    }
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int method = Integer.parseInt(request.getParameter("method"));
+		if (method == 0) {
+			this.addArticleType(request, response);
+		}
+		if (method == 1) {
+			this.deleteArticleType(request, response);
+		}
+		if (method == 2) {
+			this.addArticle(request, response);
+		}
+		if (method == 3) {
+			this.deleteArticle(request, response);
+		}
+		if (method == 4) {
+			this.updateArticle(request, response);
+		}
+		if (method == 5) {
+			this.headAddNumberArticle(request, response);
+		}
+		if (method == 6) {
+			this.deleteRestore(request, response);
+		}
+		if (method == 7) {
+			this.HeadAddRestore(request, response);
+		}
+	}
 
-    public void HeadAddRestore(HttpServletRequest request,
-                               HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        restoreDao = new RestoreDao();
-        RestoreForm restoreForm = new RestoreForm();
-        restoreForm.setArticleId(Integer.valueOf(request.getParameter("articleId")));
-        restoreForm.setReAccount(request.getParameter("accountId"));
-        restoreForm.setReTitle(Chinese.toChinese(request.getParameter("reTitle")));
-        restoreForm.setReContent(Chinese.toChinese(request.getParameter("reContent")));
-        if (restoreDao.operationRestore("æ·»åŠ ", restoreForm)) {
-            out
-                    .print("<script language=javascript>alert('æ·»åŠ å›å¤ä¿¡æ¯æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='head_ArticleForm.jsp?id=" + request.getParameter("articleId") + "';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('æ·»åŠ å›å¤ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	public void HeadAddRestore(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		restoreDao = new RestoreDao();
+		RestoreForm restoreForm = new RestoreForm();
+		restoreForm.setArticleId(Integer.valueOf(request.getParameter("articleId")));
+		restoreForm.setReAccount(request.getParameter("accountId"));
+		restoreForm.setReTitle(Chinese.toChinese(request.getParameter("reTitle")));
+		restoreForm.setReContent(Chinese.toChinese(request.getParameter("reContent")));
+		if (restoreDao.operationRestore("Ìí¼Ó", restoreForm)) {
+			out
+					.print("<script language=javascript>alert('Ìí¼Ó»Ø¸´ĞÅÏ¢³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='head_ArticleForm.jsp?id="+request.getParameter("articleId")+"';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('Ìí¼Ó»Ø¸´ĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
-    }
+	}
 
-    public void deleteRestore(HttpServletRequest request,
-                              HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        restoreDao = new RestoreDao();
-        RestoreForm restoreForm = new RestoreForm();
-        restoreForm.setId(Integer.valueOf(request.getParameter("id")));
+	public void deleteRestore(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		restoreDao = new RestoreDao();
+		RestoreForm restoreForm = new RestoreForm();
+		restoreForm.setId(Integer.valueOf(request.getParameter("id")));
+	
+		if (this.restoreDao.operationRestore("É¾³ı", restoreForm)) {
+			out
+					.print("<script language=javascript>alert('É¾³ı»Ø¸´³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_RestoreSelect.jsp?id="
+							+ request.getParameter("idd") + "';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ı»Ø¸´Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
-        if (this.restoreDao.operationRestore("åˆ é™¤", restoreForm)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤å›å¤æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_RestoreSelect.jsp?id="
-                            + request.getParameter("idd") + "';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤å›å¤å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	}
 
-    }
+	// Ôö¼Ó·ÃÎÊ´ÎÊı
+	public void headAddNumberArticle(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		ArticleForm articleForm = new ArticleForm();
+		articleDao = new ArticleDao();
+		articleForm.setId(Integer.valueOf(request.getParameter("id")));
+		articleDao.operationArticle("Ôö¼Ó", articleForm);
+		request.setAttribute("form", articleDao.queryArticleForm(Integer
+				.valueOf(request.getParameter("id"))));
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("head_ArticleForm.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-    // å¢åŠ è®¿é—®æ¬¡æ•°
-    public void headAddNumberArticle(HttpServletRequest request,
-                                     HttpServletResponse response) throws ServletException, IOException {
-        ArticleForm articleForm = new ArticleForm();
-        articleDao = new ArticleDao();
-        articleForm.setId(Integer.valueOf(request.getParameter("id")));
-        articleDao.operationArticle("å¢åŠ ", articleForm);
-        request.setAttribute("form", articleDao.queryArticleForm(Integer
-                .valueOf(request.getParameter("id"))));
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("head_ArticleForm.jsp");
-        requestDispatcher.forward(request, response);
-    }
+	public void updateArticle(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		ArticleForm articleForm = new ArticleForm();
+		articleForm.setId(Integer.valueOf(request.getParameter("id")));
+		articleForm.setTypeId(Integer.valueOf(request.getParameter("typeId")));
+		articleForm.setTitle(Chinese.toChinese(request.getParameter("title")));
+		articleForm.setContent(Chinese.toChinese(request
+				.getParameter("content")));
+		articleDao = new ArticleDao();
+		if (articleDao.operationArticle("ĞŞ¸Ä", articleForm)) {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸ÄÎÄÕÂ³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_ArticleSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸ÄÎÄÕÂÊ§°Ü£¡');history.go(-1);</script>");
+		}
+	}
 
-    public void updateArticle(HttpServletRequest request,
-                              HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        ArticleForm articleForm = new ArticleForm();
-        articleForm.setId(Integer.valueOf(request.getParameter("id")));
-        articleForm.setTypeId(Integer.valueOf(request.getParameter("typeId")));
-        articleForm.setTitle(Chinese.toChinese(request.getParameter("title")));
-        articleForm.setContent(Chinese.toChinese(request
-                .getParameter("content")));
-        articleDao = new ArticleDao();
-        if (articleDao.operationArticle("ä¿®æ”¹", articleForm)) {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹æ–‡ç« æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_ArticleSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹æ–‡ç« å¤±è´¥ï¼');history.go(-1);</script>");
-        }
-    }
+	// ºóÌ¨É¾³ıÎÄÕÂ
+	public void deleteArticle(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		ArticleForm articleForm = new ArticleForm();
+		articleForm.setId(Integer.valueOf(request.getParameter("id")));
+		articleDao = new ArticleDao();
+		if (articleDao.operationArticle("É¾³ı", articleForm)) {
+			out
+					.print("<script language=javascript>alert('É¾³ıÎÄÕÂ³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_ArticleSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ıÎÄÕÂÊ§°Ü£¡');history.go(-1);</script>");
+		}
+	}
 
-    // åå°åˆ é™¤æ–‡ç« 
-    public void deleteArticle(HttpServletRequest request,
-                              HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        ArticleForm articleForm = new ArticleForm();
-        articleForm.setId(Integer.valueOf(request.getParameter("id")));
-        articleDao = new ArticleDao();
-        if (articleDao.operationArticle("åˆ é™¤", articleForm)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ–‡ç« æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_ArticleSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ–‡ç« å¤±è´¥ï¼');history.go(-1);</script>");
-        }
-    }
+	// ºóÌ¨Ìí¼ÓÎÄÕÂ
+	public void addArticle(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		ArticleForm articleForm = new ArticleForm();
+		articleForm.setTypeId(Integer.valueOf(request.getParameter("typeId")));
+		articleForm.setTitle(Chinese.toChinese(request.getParameter("title")));
+		articleForm.setNumber(Integer.valueOf(request.getParameter("number")));
+		articleForm.setContent(Chinese.toChinese(request
+				.getParameter("content")));
+		articleForm
+				.setPhTime(Chinese.toChinese(request.getParameter("phTime")));
+		articleDao = new ArticleDao();
+		String result = "ÎÄÕÂÌí¼ÓÊ§°Ü£¡";
+		if (articleDao.operationArticle("Ìí¼Ó", articleForm)) {
+			result = "ÎÄÕÂÌí¼Ó³É¹¦£¡";
+		}
+		request.setAttribute("result", result);
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_ArticleAdd.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-    // åå°æ·»åŠ æ–‡ç« 
-    public void addArticle(HttpServletRequest request,
-                           HttpServletResponse response) throws ServletException, IOException {
-        ArticleForm articleForm = new ArticleForm();
-        articleForm.setTypeId(Integer.valueOf(request.getParameter("typeId")));
-        articleForm.setTitle(Chinese.toChinese(request.getParameter("title")));
-        articleForm.setNumber(Integer.valueOf(request.getParameter("number")));
-        articleForm.setContent(Chinese.toChinese(request
-                .getParameter("content")));
-        articleForm
-                .setPhTime(Chinese.toChinese(request.getParameter("phTime")));
-        articleDao = new ArticleDao();
-        String result = "æ–‡ç« æ·»åŠ å¤±è´¥ï¼";
-        if (articleDao.operationArticle("æ·»åŠ ", articleForm)) {
-            result = "æ–‡ç« æ·»åŠ æˆåŠŸï¼";
-        }
-        request.setAttribute("result", result);
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_ArticleAdd.jsp");
-        requestDispatcher.forward(request, response);
-    }
+	// ºóÌ¨É¾³ıÎÄÕÂÀà±ğ
+	public void deleteArticleType(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		ArticleTypeForm ArticleTypeForm = new ArticleTypeForm();
+		ArticleTypeForm.setId(Integer.valueOf(request.getParameter("id")));
+		articleTypeDao = new ArticleTypeDao();
+		if (articleTypeDao.operationArticleType("É¾³ı", ArticleTypeForm)) {
+			out
+					.print("<script language=javascript>alert('É¾³ıÎÄÕÂÀà±ğ³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_ArticleTypeSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('ÄúĞèÒª½«Àà±ğËùÔÚµÄÎÄÕÂÉ¾³ı,²Å¿ÉÉ¾³ı´ËÀà±ğ£¡');history.go(-1);</script>");
+		}
 
-    // åå°åˆ é™¤æ–‡ç« ç±»åˆ«
-    public void deleteArticleType(HttpServletRequest request,
-                                  HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        ArticleTypeForm ArticleTypeForm = new ArticleTypeForm();
-        ArticleTypeForm.setId(Integer.valueOf(request.getParameter("id")));
-        articleTypeDao = new ArticleTypeDao();
-        if (articleTypeDao.operationArticleType("åˆ é™¤", ArticleTypeForm)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ–‡ç« ç±»åˆ«æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_ArticleTypeSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('æ‚¨éœ€è¦å°†ç±»åˆ«æ‰€åœ¨çš„æ–‡ç« åˆ é™¤,æ‰å¯åˆ é™¤æ­¤ç±»åˆ«ï¼');history.go(-1);</script>");
-        }
+	}
 
-    }
+	// ºóÌ¨Ìí¼ÓÎÄÕÂÀà±ğ
+	public void addArticleType(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		ArticleTypeForm ArticleTypeForm = new ArticleTypeForm();
+		ArticleTypeForm.setTypeName(Chinese.toChinese(request
+				.getParameter("typeName")));
+		ArticleTypeForm.setDescription(Chinese.toChinese(request
+				.getParameter("description")));
+		articleTypeDao = new ArticleTypeDao();
+		if (articleTypeDao.operationArticleType("Ìí¼Ó", ArticleTypeForm)) {
+			out
+					.print("<script language=javascript>alert('Ìí¼ÓÎÄÕÂÀà±ğ³É¹¦£¬ÇëÖØĞÂ²éÑ¯£¡');window.location.href='back_ArticleTypeSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('Ìí¼ÓÎÄÕÂÀà±ğÊ§°Ü£¡');history.go(-1);</script>");
+		}
 
-    // åå°æ·»åŠ æ–‡ç« ç±»åˆ«
-    public void addArticleType(HttpServletRequest request,
-                               HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        ArticleTypeForm ArticleTypeForm = new ArticleTypeForm();
-        ArticleTypeForm.setTypeName(Chinese.toChinese(request
-                .getParameter("typeName")));
-        ArticleTypeForm.setDescription(Chinese.toChinese(request
-                .getParameter("description")));
-        articleTypeDao = new ArticleTypeDao();
-        if (articleTypeDao.operationArticleType("æ·»åŠ ", ArticleTypeForm)) {
-            out
-                    .print("<script language=javascript>alert('æ·»åŠ æ–‡ç« ç±»åˆ«æˆåŠŸï¼Œè¯·é‡æ–°æŸ¥è¯¢ï¼');window.location.href='back_ArticleTypeSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('æ·»åŠ æ–‡ç« ç±»åˆ«å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	}
 
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 
 }

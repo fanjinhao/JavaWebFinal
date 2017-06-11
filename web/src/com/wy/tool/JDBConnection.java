@@ -3,25 +3,22 @@ package com.wy.tool;
 import java.sql.*;
 
 public class JDBConnection {
-    private String url = "jdbc:mysql://localhost/db_BlodMay";
+    private final String url = "jdbc:mysql://127.0.0.1:3306/db_blodmay?user=root&password=123456&characterEncoding=utf-8";
     private final String userName = "root";
     private final String password = "123456";
     private Connection con = null;
-
-    //é€šè¿‡æ„é€ æ–¹æ³•åŠ è½½æ•°æ®åº“é©±åŠ¨
+//Í¨¹ı¹¹Ôì·½·¨¼ÓÔØÊı¾İ¿âÇı¶¯
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
         } catch (Exception ex) {
-            System.out.println("æ•°æ®åº“åŠ è½½å¤±è´¥");
+            System.out.println("Êı¾İ¿â¼ÓÔØÊ§°Ü");
         }
     }
-
-    //åˆ›å»ºæ•°æ®åº“è¿æ¥
+//´´½¨Êı¾İ¿âÁ¬½Ó
     public boolean creatConnection() {
         try {
             con = DriverManager.getConnection(url, userName, password);
-
             con.setAutoCommit(true);
 
         } catch (SQLException e) {
@@ -30,24 +27,22 @@ public class JDBConnection {
         }
         return true;
     }
-
-    //å¯¹æ•°æ®åº“çš„å¢åŠ ã€ä¿®æ”¹å’Œåˆ é™¤çš„æ“ä½œ
+//¶ÔÊı¾İ¿âµÄÔö¼Ó¡¢ĞŞ¸ÄºÍÉ¾³ıµÄ²Ù×÷
     public boolean executeUpdate(String sql) {
-        if (con == null) {
+         if (con == null) {
             creatConnection();
         }
         try {
             Statement stmt = con.createStatement();
             int iCount = stmt.executeUpdate(sql);
-            System.out.println("æ“ä½œæˆåŠŸï¼Œæ‰€å½±å“çš„è®°å½•æ•°ä¸º" + String.valueOf(iCount));
-            return true;
+            System.out.println("²Ù×÷³É¹¦£¬ËùÓ°ÏìµÄ¼ÇÂ¼ÊıÎª" + String.valueOf(iCount));
+		    return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
-        }
+		    return false;
+        }   
     }
-
-    //å¯¹æ•°æ®åº“çš„æŸ¥è¯¢æ“ä½œ
+//¶ÔÊı¾İ¿âµÄ²éÑ¯²Ù×÷
     public ResultSet executeQuery(String sql) {
         ResultSet rs;
         try {

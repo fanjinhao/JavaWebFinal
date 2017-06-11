@@ -16,105 +16,105 @@ import com.wy.tool.Chinese;
 
 public class FriendServlet extends HttpServlet {
 
-    private FriendDao friendDao = null;
+	private FriendDao friendDao = null;
 
-    private int method;
+	private int method;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        method = Integer.parseInt(request.getParameter("method"));
-        if (method == 0) {
-            this.addFriend(request, response);// æ·»åŠ æœ‹å‹ä¿¡æ¯
-        }
-        if (method == 1) {
-            this.deleteFriend(request, response);// åˆ é™¤æœ‹å‹ä¿¡æ¯
-        }
-        if (method == 2) {
-            this.queryFriendForm(request, response); // ä»¥æ•°æ®åº“IDä¸ºæ“ä½œï¼ŒæŸ¥è¯¢ä¸€ç»„ä¿¡æ¯
-        }
-        if (method == 3) {
-            this.updateFriend(request, response); // ä»¥æ•°æ®åº“IDä¸ºæ“ä½œï¼ŒæŸ¥è¯¢ä¸€ç»„ä¿¡æ¯
-        }
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		method = Integer.parseInt(request.getParameter("method"));
+		if (method == 0) {
+			this.addFriend(request, response);// Ìí¼ÓÅóÓÑĞÅÏ¢
+		}
+		if (method == 1) {
+			this.deleteFriend(request, response);// É¾³ıÅóÓÑĞÅÏ¢
+		}
+		if (method == 2) {
+			this.queryFriendForm(request, response); // ÒÔÊı¾İ¿âIDÎª²Ù×÷£¬²éÑ¯Ò»×éĞÅÏ¢
+		}
+		if (method == 3) {
+			this.updateFriend(request, response); // ÒÔÊı¾İ¿âIDÎª²Ù×÷£¬²éÑ¯Ò»×éĞÅÏ¢
+		}
 
-    }
+	}
 
-    // ä»¥æ•°æ®åº“IDä¸ºæ¡ä»¶ï¼Œä¿®æ”¹ä¸€ç»„ä¿¡æ¯
-    public void updateFriend(HttpServletRequest request,
-                             HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        friendDao = new FriendDao();
-        FriendForm friendForm = new FriendForm();
-        friendForm.setId(Integer.valueOf(request.getParameter("id")));
-        friendForm.setName(Chinese.toChinese(request.getParameter("name")));
-        friendForm.setQQNumber(request.getParameter("QQNumber"));
-        friendForm.setDescription(Chinese.toChinese(request
-                .getParameter("description")));
-        if (friendDao.updateFriend(friendForm)) {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹æ­¤æœ‹å‹ä¿¡æ¯æˆåŠŸï¼Œè¯·é‡æ–°è¿›è¡ŒæŸ¥è¯¢ï¼');window.location.href='back_FriendSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹æœ‹å‹ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	// ÒÔÊı¾İ¿âIDÎªÌõ¼ş£¬ĞŞ¸ÄÒ»×éĞÅÏ¢
+	public void updateFriend(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		friendDao = new FriendDao();
+		FriendForm friendForm = new FriendForm();
+		friendForm.setId(Integer.valueOf(request.getParameter("id")));
+		friendForm.setName(Chinese.toChinese(request.getParameter("name")));
+		friendForm.setQQNumber(request.getParameter("QQNumber"));
+		friendForm.setDescription(Chinese.toChinese(request
+				.getParameter("description")));
+		if (friendDao.updateFriend(friendForm)) {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸Ä´ËÅóÓÑĞÅÏ¢³É¹¦£¬ÇëÖØĞÂ½øĞĞ²éÑ¯£¡');window.location.href='back_FriendSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸ÄÅóÓÑĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
+	
+	}
 
-    }
+	// ÒÔÊı¾İ¿âIDÎª²Ù×÷£¬²éÑ¯Ò»×éĞÅÏ¢
+	public void queryFriendForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		friendDao = new FriendDao();
+		request.setAttribute("form", friendDao.queryFriendForm(request
+				.getParameter("id")));
 
-    // ä»¥æ•°æ®åº“IDä¸ºæ“ä½œï¼ŒæŸ¥è¯¢ä¸€ç»„ä¿¡æ¯
-    public void queryFriendForm(HttpServletRequest request,
-                                HttpServletResponse response) throws ServletException, IOException {
-        friendDao = new FriendDao();
-        request.setAttribute("form", friendDao.queryFriendForm(request
-                .getParameter("id")));
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_FriendUpdate.jsp");
+		requestDispatcher.forward(request, response);
 
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_FriendUpdate.jsp");
-        requestDispatcher.forward(request, response);
+	}
 
-    }
+	// É¾³ıÅóÓÑĞÅÏ¢
+	public void deleteFriend(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		friendDao = new FriendDao();
+		Integer id = Integer.valueOf(request.getParameter("id"));
 
-    // åˆ é™¤æœ‹å‹ä¿¡æ¯
-    public void deleteFriend(HttpServletRequest request,
-                             HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        friendDao = new FriendDao();
-        Integer id = Integer.valueOf(request.getParameter("id"));
+		if (friendDao.deleteFriend(id)) {
+			out
+					.print("<script language=javascript>alert('É¾³ı´ËÅóÓÑĞÅÏ¢³É¹¦£¬ÇëÖØĞÂ½øĞĞ²éÑ¯£¡');window.location.href='back_FriendSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ıÅóÓÑĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
-        if (friendDao.deleteFriend(id)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ­¤æœ‹å‹ä¿¡æ¯æˆåŠŸï¼Œè¯·é‡æ–°è¿›è¡ŒæŸ¥è¯¢ï¼');window.location.href='back_FriendSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æœ‹å‹ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	}
 
-    }
+	// Ìí¼ÓÅóÓÑĞÅÏ¢
+	public void addFriend(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
+		friendDao = new FriendDao();
+		FriendForm friendForm = new FriendForm();
+		friendForm.setName(Chinese.toChinese(request.getParameter("name")));
+		friendForm.setQQNumber(request.getParameter("QQNumber"));
+		friendForm.setDescription(Chinese.toChinese(request
+				.getParameter("description")));
+		String result = "Ìí¼ÓºÃÓÑÊ§°Ü£¡";
+		if (friendDao.addFriend(friendForm)) {
+			result = "Ìí¼ÓºÃÓÑ³É¹¦£¡";
+		}
+		request.setAttribute("result", result);
 
-    // æ·»åŠ æœ‹å‹ä¿¡æ¯
-    public void addFriend(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
-        friendDao = new FriendDao();
-        FriendForm friendForm = new FriendForm();
-        friendForm.setName(Chinese.toChinese(request.getParameter("name")));
-        friendForm.setQQNumber(request.getParameter("QQNumber"));
-        friendForm.setDescription(Chinese.toChinese(request
-                .getParameter("description")));
-        String result = "æ·»åŠ å¥½å‹å¤±è´¥ï¼";
-        if (friendDao.addFriend(friendForm)) {
-            result = "æ·»åŠ å¥½å‹æˆåŠŸï¼";
-        }
-        request.setAttribute("result", result);
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_FriendAdd.jsp");
+		requestDispatcher.forward(request, response);
 
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_FriendAdd.jsp");
-        requestDispatcher.forward(request, response);
+	}
 
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 
 }

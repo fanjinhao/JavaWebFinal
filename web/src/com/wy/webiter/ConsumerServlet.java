@@ -1,191 +1,188 @@
 package com.wy.webiter;
-
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import com.wy.dao.ConsumerDao;
 import com.wy.form.ConsumerForm;
 import com.wy.tool.Chinese;
 
 public class ConsumerServlet extends HttpServlet {
-    private ConsumerDao consumerDao = null;
-    private int method;
+	private ConsumerDao consumerDao = null;
+	private int method;
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		method = Integer.parseInt(request.getParameter("method"));
+		if (method == 0) {
+			checkConsumer(request, response); // ÓÃ»§µÇÂ¼²Ù×÷
+		}
+		if (method == 1) {
+			registerConsumer(request, response);// ÓÃ»§×¢²á²Ù×÷
+		}
+		if (method == 2) {
+			queryConsumerForm(request, response);// ºóÌ¨²Ù×÷ÖĞ£¬¶ÔÒ»¸öÓÃ»§½øĞĞ²éÑ¯
+		}
+		if (method == 3) {
+			deleteConsumerForm(request, response);// ºóÌ¨²Ù×÷ÖĞ£¬¶ÔÓÃ»§½øĞĞÉ¾³ı²Ù×÷
+		}
+		if (method == 4) {
+			queryConsumerHostForm(request, response); // ºóÌ¨²Ù×÷ÖĞ£¬¶Ô²©Ö÷µÄ²éÑ¯²Ù×÷
+		}
+		if (method == 5) {
+			updateConsumerHostForm(request, response); // ºóÌ¨²Ù×÷ÖĞ£¬¶Ô²©Ö÷ĞÅÏ¢µÄĞŞ¸Ä²Ù×÷
+		}
+		if (method == 6) {
+			front_updateConsumerForm(request, response); // Ç°Ì¨²Ù×÷ÖĞ£¬ÓÃ»§¶ÔµÇÂ¼ÓÃ½øĞĞĞŞ¸Ä
+		}
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        method = Integer.parseInt(request.getParameter("method"));
-        if (method == 0) {
-            checkConsumer(request, response); // ç”¨æˆ·ç™»å½•æ“ä½œ
-        }
-        if (method == 1) {
-            registerConsumer(request, response);// ç”¨æˆ·æ³¨å†Œæ“ä½œ
-        }
-        if (method == 2) {
-            queryConsumerForm(request, response);// åå°æ“ä½œä¸­ï¼Œå¯¹ä¸€ä¸ªç”¨æˆ·è¿›è¡ŒæŸ¥è¯¢
-        }
-        if (method == 3) {
-            deleteConsumerForm(request, response);// åå°æ“ä½œä¸­ï¼Œå¯¹ç”¨æˆ·è¿›è¡Œåˆ é™¤æ“ä½œ
-        }
-        if (method == 4) {
-            queryConsumerHostForm(request, response); // åå°æ“ä½œä¸­ï¼Œå¯¹åšä¸»çš„æŸ¥è¯¢æ“ä½œ
-        }
-        if (method == 5) {
-            updateConsumerHostForm(request, response); // åå°æ“ä½œä¸­ï¼Œå¯¹åšä¸»ä¿¡æ¯çš„ä¿®æ”¹æ“ä½œ
-        }
-        if (method == 6) {
-            front_updateConsumerForm(request, response); // å‰å°æ“ä½œä¸­ï¼Œç”¨æˆ·å¯¹ç™»å½•ç”¨è¿›è¡Œä¿®æ”¹
-        }
+	}
 
-    }
+	// Ç°Ì¨²Ù×÷ÖĞ£¬ÓÃ»§¶ÔµÇÂ¼ÓÃ½øĞĞĞŞ¸Ä
+	public void front_updateConsumerForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		PrintWriter out = response.getWriter();
+		ConsumerForm form = new ConsumerForm();
+		consumerDao = new ConsumerDao();
+		form.setAccount(Chinese.toChinese(request.getParameter("account")));
+		form.setPassword(Chinese.toChinese(request.getParameter("password")));
+		form.setName(Chinese.toChinese(request.getParameter("name")));
+		form.setSex(Chinese.toChinese(request.getParameter("sex")));
+		form.setQQNumber(request.getParameter("QQnumber"));
+		form.setMainPage(request.getParameter("mainPage"));
+		form.setInterest(Chinese.toChinese(request.getParameter("interest")));
+		form.setId(Integer.valueOf(request.getParameter("id")));
+		form.setEMail(request.getParameter("eMail"));
+		if (consumerDao.front_updateConsumerForm(form)) {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸ÄÓÃ»§³É¹¦£¬ÇëÖØĞÂµÇÂ¼£¡');window.location.href='dealwith.jsp?sign=2';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('ĞŞ¸ÄÓÃ»§ĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
 
-    // å‰å°æ“ä½œä¸­ï¼Œç”¨æˆ·å¯¹ç™»å½•ç”¨è¿›è¡Œä¿®æ”¹
-    public void front_updateConsumerForm(HttpServletRequest request,
-                                         HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        PrintWriter out = response.getWriter();
-        ConsumerForm form = new ConsumerForm();
-        consumerDao = new ConsumerDao();
-        form.setAccount(Chinese.toChinese(request.getParameter("account")));
-        form.setPassword(Chinese.toChinese(request.getParameter("password")));
-        form.setName(Chinese.toChinese(request.getParameter("name")));
-        form.setSex(Chinese.toChinese(request.getParameter("sex")));
-        form.setQQNumber(request.getParameter("QQnumber"));
-        form.setMainPage(request.getParameter("mainPage"));
-        form.setInterest(Chinese.toChinese(request.getParameter("interest")));
-        form.setId(Integer.valueOf(request.getParameter("id")));
-        form.setEMail(request.getParameter("eMail"));
-        if (consumerDao.front_updateConsumerForm(form)) {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹ç”¨æˆ·æˆåŠŸï¼Œè¯·é‡æ–°ç™»å½•ï¼');window.location.href='dealwith.jsp?sign=2';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	}
 
-    }
+	// ºóÌ¨²Ù×÷ÖĞ£¬¶Ô²©Ö÷ĞÅÏ¢µÄĞŞ¸Ä²Ù×÷
+	public void updateConsumerHostForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("gb2312");
+		ConsumerForm form = new ConsumerForm();
+		consumerDao = new ConsumerDao();
+		form.setAccount(Chinese.toChinese(request.getParameter("account")));
+		form.setPassword(Chinese.toChinese(request.getParameter("password")));
+		form.setName(Chinese.toChinese(request.getParameter("name")));
+		form.setSex(Chinese.toChinese(request.getParameter("sex")));
+		form.setQQNumber(request.getParameter("QQnumber"));
+		form.setMainPage(request.getParameter("mainPage"));
+		form.setInterest(Chinese.toChinese(request.getParameter("interest")));
+		form.setEMail(request.getParameter("eMail"));
+		form.setManageLevel("¸ß¼¶");
+		String result = "ĞŞ¸Ä²©Ö÷ĞÅÏ¢Ê§°Ü£¡";
 
-    // åå°æ“ä½œä¸­ï¼Œå¯¹åšä¸»ä¿¡æ¯çš„ä¿®æ”¹æ“ä½œ
-    public void updateConsumerHostForm(HttpServletRequest request,
-                                       HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("gb2312");
-        ConsumerForm form = new ConsumerForm();
-        consumerDao = new ConsumerDao();
-        form.setAccount(Chinese.toChinese(request.getParameter("account")));
-        form.setPassword(Chinese.toChinese(request.getParameter("password")));
-        form.setName(Chinese.toChinese(request.getParameter("name")));
-        form.setSex(Chinese.toChinese(request.getParameter("sex")));
-        form.setQQNumber(request.getParameter("QQnumber"));
-        form.setMainPage(request.getParameter("mainPage"));
-        form.setInterest(Chinese.toChinese(request.getParameter("interest")));
-        form.setEMail(request.getParameter("eMail"));
-        form.setManageLevel("é«˜çº§");
-        String result = "ä¿®æ”¹åšä¸»ä¿¡æ¯å¤±è´¥ï¼";
+		if (consumerDao.updateConsumerForm(form)) {
+			result = "ĞŞ¸Ä²©Ö÷ĞÅÏ¢³É¹¦£¡";
+		}
 
-        if (consumerDao.updateConsumerForm(form)) {
-            result = "ä¿®æ”¹åšä¸»ä¿¡æ¯æˆåŠŸï¼";
-        }
+		request.setAttribute("result", result);
+		request.setAttribute("form", consumerDao.getConsumerForm(form
+				.getAccount()));
 
-        request.setAttribute("result", result);
-        request.setAttribute("form", consumerDao.getConsumerForm(form
-                .getAccount()));
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_consumerSelectHostForm.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_consumerSelectHostForm.jsp");
-        requestDispatcher.forward(request, response);
-    }
+	// ºóÌ¨²Ù×÷ÖĞ£¬¶ÔÓÃ»§½øĞĞÉ¾³ı²Ù×÷
+	public void deleteConsumerForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=GBK");
+		String account = Chinese.toChinese(request.getParameter("account"));
+		consumerDao = new ConsumerDao();
+		PrintWriter out = response.getWriter();
+		if (consumerDao.deleteConsumerForm(account)) {
+			out
+					.print("<script language=javascript>alert('É¾³ı´ËÓÃ»§³É¹¦£¬ÇëÖØĞÂ½øĞĞ²éÑ¯£¡');window.location.href='back_consumerSelect.jsp';</script>");
+		} else {
+			out
+					.print("<script language=javascript>alert('É¾³ıÓÃ»§ĞÅÏ¢Ê§°Ü£¡');history.go(-1);</script>");
+		}
+	
+	}
 
-    // åå°æ“ä½œä¸­ï¼Œå¯¹ç”¨æˆ·è¿›è¡Œåˆ é™¤æ“ä½œ
-    public void deleteConsumerForm(HttpServletRequest request,
-                                   HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=GBK");
-        String account = Chinese.toChinese(request.getParameter("account"));
-        consumerDao = new ConsumerDao();
-        PrintWriter out = response.getWriter();
-        if (consumerDao.deleteConsumerForm(account)) {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤æ­¤ç”¨æˆ·æˆåŠŸï¼Œè¯·é‡æ–°è¿›è¡ŒæŸ¥è¯¢ï¼');window.location.href='back_consumerSelect.jsp';</script>");
-        } else {
-            out
-                    .print("<script language=javascript>alert('åˆ é™¤ç”¨æˆ·ä¿¡æ¯å¤±è´¥ï¼');history.go(-1);</script>");
-        }
+	// ºóÌ¨²Ù×÷ÖĞ£¬¶Ô²©Ö÷µÄ²éÑ¯²Ù×÷
+	public void queryConsumerHostForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		consumerDao = new ConsumerDao();
+		request.setAttribute("form", consumerDao.getConsumerForm("tsoft"));
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_consumerSelectHostForm.jsp");
+		requestDispatcher.forward(request, response);
 
-    }
+	}
 
-    // åå°æ“ä½œä¸­ï¼Œå¯¹åšä¸»çš„æŸ¥è¯¢æ“ä½œ
-    public void queryConsumerHostForm(HttpServletRequest request,
-                                      HttpServletResponse response) throws ServletException, IOException {
-        consumerDao = new ConsumerDao();
-        request.setAttribute("form", consumerDao.getConsumerForm("tsoft"));
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_consumerSelectHostForm.jsp");
-        requestDispatcher.forward(request, response);
+	// ºóÌ¨²Ù×÷ÖĞ£¬¶ÔÒ»¸öÓÃ»§½øĞĞ²éÑ¯
+	public void queryConsumerForm(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		consumerDao = new ConsumerDao();
+		String account = Chinese.toChinese(request.getParameter("account"));
+		request.setAttribute("form", consumerDao.getConsumerForm(account));
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("back_consumerSelectForm.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-    }
+	// ÓÃ»§×¢²á²Ù×÷
+	public void registerConsumer(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("gb2312");
+		ConsumerForm form = new ConsumerForm();
+		consumerDao = new ConsumerDao();
+		form.setAccount(Chinese.toChinese(request.getParameter("account")));
+		form.setPassword(Chinese.toChinese(request.getParameter("password")));
+		form.setName(Chinese.toChinese(request.getParameter("name")));
+		form.setSex(Chinese.toChinese(request.getParameter("sex")));
+		form.setQQNumber(request.getParameter("QQnumber"));
+		form.setMainPage(request.getParameter("mainPage"));
+		form.setInterest(Chinese.toChinese(request.getParameter("interest")));
+		form.setEMail(request.getParameter("eMail"));
+		form.setManageLevel("ÆÕÍ¨");
+		String result = "fail";
+		if (consumerDao.getConsumerForm(form.getAccount()) == null) {
+			if (consumerDao.addConsumerForm(form)) {
+				request.setAttribute("form", consumerDao.getConsumerForm(form
+						.getAccount()));
+				result = "success";
+			}
+		}
+		request.setAttribute("result", result);
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("dealwith.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-    // åå°æ“ä½œä¸­ï¼Œå¯¹ä¸€ä¸ªç”¨æˆ·è¿›è¡ŒæŸ¥è¯¢
-    public void queryConsumerForm(HttpServletRequest request,
-                                  HttpServletResponse response) throws ServletException, IOException {
-        consumerDao = new ConsumerDao();
-        String account = Chinese.toChinese(request.getParameter("account"));
-        request.setAttribute("form", consumerDao.getConsumerForm(account));
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("back_consumerSelectForm.jsp");
-        requestDispatcher.forward(request, response);
-    }
+	// ÓÃ»§µÇÂ¼²Ù×÷
+	public void checkConsumer(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("gb2312");
+		String account = request.getParameter("account");
+		consumerDao = new ConsumerDao();
+		ConsumerForm consumerForm = consumerDao.getConsumerForm(account);
+		if (consumerForm == null) {
+			request.setAttribute("information", "ÄúÊäÈëµÄÓÃ»§Ãû²»´æÔÚ£¬ÇëÖØĞÂÊäÈë£¡");
+		} else if (!consumerForm.getPassword().equals(
+				request.getParameter("password"))) {
+			request.setAttribute("information", "ÄúÊäÈëµÄµÇÂ¼ÃÜÂëÓĞÎó£¬ÇëÖØĞÂÊäÈë£¡");
+		} else {
 
-    // ç”¨æˆ·æ³¨å†Œæ“ä½œ
-    public void registerConsumer(HttpServletRequest request,
-                                 HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("gb2312");
-        ConsumerForm form = new ConsumerForm();
-        consumerDao = new ConsumerDao();
-        form.setAccount(Chinese.toChinese(request.getParameter("account")));
-        form.setPassword(Chinese.toChinese(request.getParameter("password")));
-        form.setName(Chinese.toChinese(request.getParameter("name")));
-        form.setSex(Chinese.toChinese(request.getParameter("sex")));
-        form.setQQNumber(request.getParameter("QQnumber"));
-        form.setMainPage(request.getParameter("mainPage"));
-        form.setInterest(Chinese.toChinese(request.getParameter("interest")));
-        form.setEMail(request.getParameter("eMail"));
-        form.setManageLevel("æ™®é€š");
-        String result = "fail";
-        if (consumerDao.getConsumerForm(form.getAccount()) == null) {
-            if (consumerDao.addConsumerForm(form)) {
-                request.setAttribute("form", consumerDao.getConsumerForm(form
-                        .getAccount()));
-                result = "success";
-            }
-        }
-        request.setAttribute("result", result);
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("dealwith.jsp");
-        requestDispatcher.forward(request, response);
-    }
+			request.setAttribute("form", consumerForm);
+		}
+		RequestDispatcher requestDispatcher = request
+				.getRequestDispatcher("dealwith.jsp");
+		requestDispatcher.forward(request, response);
+	}
 
-    // ç”¨æˆ·ç™»å½•æ“ä½œ
-    public void checkConsumer(HttpServletRequest request,
-                              HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("gb2312");
-        String account = request.getParameter("account");
-        consumerDao = new ConsumerDao();
-        ConsumerForm consumerForm = consumerDao.getConsumerForm(account);
-        if (consumerForm == null) {
-            request.setAttribute("information", "æ‚¨è¾“å…¥çš„ç”¨æˆ·åä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼");
-        } else if (!consumerForm.getPassword().equals(
-                request.getParameter("password"))) {
-            request.setAttribute("information", "æ‚¨è¾“å…¥çš„ç™»å½•å¯†ç æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼");
-        } else {
-
-            request.setAttribute("form", consumerForm);
-        }
-        RequestDispatcher requestDispatcher = request
-                .getRequestDispatcher("dealwith.jsp");
-        requestDispatcher.forward(request, response);
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }

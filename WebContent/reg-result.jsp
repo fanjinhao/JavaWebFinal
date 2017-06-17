@@ -41,7 +41,6 @@
 	<div class="shadow">
 		<div class="welcom"  style="width: 900px; margin: 100px auto;" align="center">
 			<div style="padding-top: 150px;padding-bottom: 150px;">
-				<font style="font-size: 70px;"><strong>欢迎注册java1234论坛</strong></font>
 			</div>
 			<!-- <ul class="steps clearfix">
 				<li class="finished"><em></em>填写注册信息</li>
